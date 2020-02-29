@@ -23,6 +23,11 @@ results = db.execute("SELECT * FROM tornadoes")
 @app.route("/")
 def api_call():
 
+    return render_template('index.html')
+
+@app.route("/data")
+def data_endpoint():
+
     tornado_data = []
     for result in results:
         tornado_dict = {}
