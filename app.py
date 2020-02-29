@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 # SQLAlchemy Setup
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS, False']
-DATABASE_URI = "postgres://postgres:postgres@localhost:5432/Tornadoes_USA"
+DATABASE_URI = "postgres://postgres:YOURPASSWORD@localhost:5432/Tornadoes_USA"
 
 db = create_engine(DATABASE_URI)
 
