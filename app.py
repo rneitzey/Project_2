@@ -6,15 +6,11 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
 from flask import Flask, jsonify, render_template
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 
 
 app = Flask(__name__)
-
-# Use flask_pymongo to set up mongo connection
-# app.config["MONGO_URI"] = "mongodb://localhost:27017/fruits_db"
-# mongo = PyMongo(app)
 
 # SQLAlchemy Setup
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS, False']
@@ -24,30 +20,30 @@ db = create_engine(DATABASE_URI)
 
 results = db.execute("SELECT * FROM tornadoes")
 
-# for r in results:
-#     return jsonify(r)
-
 @app.route("/")
 def api_call():
 
-    return jsonify(results)
-#     return render_template('index.html')
-
-
-
-# @app.route("/API_tornadoes", methods=['GET'])
-# def index():
-#     session = Session(engine)
-
-#     # row = session.query(tornadoes.Date, tornadoes.State, tornadoes.'Starting Latitude').all()
-
-#     # row = db.tornadoes.find({})
-#     data = []
-#     for x in row:
-#         data.append({'Date' : x['Date'], 'State' : x['State'], 'Starting Latitude' : x['Starting Latitude']})
-
-#     return jsonify(data)
-
+    tornado_data = []
+    for result in results:
+        tornado_dict = {}
+        tornado_dict["Tornado_ID"] = result[0]
+        tornado_dict["Year"] = result[1]
+        tornado_dict["Month"] = result[2]
+        tornado_dict["Day"] = result[3]
+        tornado_dict["Date"] = result[4]
+        tornado_dict["State"] = result[5]
+        tornado_dict["Magnitude"] = result[6]
+        tornado_dict["Injuries"] = result[7]
+        tornado_dict["Fatalities"] = result[8]
+        tornado_dict["Est_Property_Loss"] = result[9]
+        tornado_dict["Start_Lat"] = result[10]
+        tornado_dict["Start_Lon"] = result[11]
+        tornado_dict["End_Lat"] = result[12]
+        tornado_dict["End_Lon"] = result[13]
+        tornado_dict["Length_Miles"] = result[14]
+        tornado_dict["Width_Yards"] = result[15]
+        tornado_data.append(tornado_dict)
+    return jsonify(tornado_data)
 
 if __name__ == "__main__":
     app.run(debug=True)
