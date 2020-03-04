@@ -14,11 +14,15 @@ app = Flask(__name__)
 
 # SQLAlchemy Setup
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS, False']
-DATABASE_URI = "postgres://postgres:YOURPASSWORD@localhost:5432/Tornadoes_USA"
+# DATABASE_URI = "postgres://postgres:YOURPASSWORD@localhost:5432/Tornadoes_USA"
 
-db = create_engine(DATABASE_URI)
+# db = create_engine(DATABASE_URI)
 
-results = db.execute("SELECT * FROM tornadoes")
+# results = db.execute("SELECT * FROM tornadoes")
+
+# conn = sqlite3.connect('magnets.sqlite')
+# c = conn.cursor()
+# results = c.execute("SELECT * FROM tornadoes")
 
 @app.route("/")
 def api_call():
@@ -27,6 +31,10 @@ def api_call():
 
 @app.route("/data")
 def data_endpoint():
+
+    conn = sqlite3.connect('magnets.sqlite')
+    c = conn.cursor()
+    results = c.execute("SELECT * FROM tornadoes where yr > 2017")
 
     tornado_data = []
     for result in results:
@@ -49,6 +57,11 @@ def data_endpoint():
         tornado_dict["Width_Yards"] = result[15]
         tornado_data.append(tornado_dict)
     return jsonify(tornado_data)
+
+@app.route("/tornadoByState")
+def tornadoByState():
+
+    return render_template('tornadoByState.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
