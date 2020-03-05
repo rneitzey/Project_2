@@ -34,7 +34,7 @@ def data_endpoint():
 
     conn = sqlite3.connect('magnets.sqlite')
     c = conn.cursor()
-    results = c.execute("SELECT * FROM tornadoes where yr > 2017")
+    results = c.execute("SELECT * FROM tornadoes")
 
     tornado_data = []
     for result in results:
