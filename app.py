@@ -20,10 +20,6 @@ app = Flask(__name__)
 
 # results = db.execute("SELECT * FROM tornadoes")
 
-# conn = sqlite3.connect('magnets.sqlite')
-# c = conn.cursor()
-# results = c.execute("SELECT * FROM tornadoes")
-
 @app.route("/")
 def api_call():
 
@@ -58,10 +54,36 @@ def data_endpoint():
         tornado_data.append(tornado_dict)
     return jsonify(tornado_data)
 
+@app.route("/mobile_homes")
+def mobile_homes_endpoint():
+
+    conn = sqlite3.connect('magnets.sqlite')
+    c = conn.cursor()
+    results = c.execute("SELECT * FROM mobile_homes")
+
+    mh_data = []
+    for result in results:
+        mh_dict = {}
+        mh_dict["OBJECTID"] = result[0]
+        mh_dict["LATITUDE"] = result[9]
+        mh_dict["LONGITUDE"] = result[10]
+        mh_data.append(mh_dict)
+    return jsonify(mh_data)
+
 @app.route("/tornadoByState")
 def tornadoByState():
 
     return render_template('tornadoByState.html')
+
+@app.route("/tornadoChart")
+def tornadoChart():
+
+    return render_template('tornadoChart.html')
+
+@app.route("/usTornadoMap")
+def usTornadoMap():
+
+    return render_template('usTornadoMap.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
